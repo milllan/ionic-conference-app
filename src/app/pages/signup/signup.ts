@@ -21,12 +21,16 @@ export class SignupPage {
   constructor(
     public router: Router,
     public userData: UserData
-  ) {}
+  ) {
+    console.log({'SignupPage' : this});
+  }
 
   onSignup(form: NgForm) {
+    console.log('onSignup USO - form.valid?', form.valid);
     this.submitted = true;
 
     if (form.valid) {
+      console.log('form.valid');
       this.userData.signup(this.signup.username);
       this.router.navigateByUrl('/app/tabs/(schedule:schedule)');
     }

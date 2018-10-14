@@ -10,14 +10,16 @@
 
 <ion-content>
   <div class="login-logo">
-    <img src="assets/img/appicon.svg" alt="Ionic logo">
+    <a href="//www.urban-hawks.com/"  target="_blank"><img src="assets/img/Urban-Hawks-logo-wide.png" alt="Ionic logo"></a>
   </div>
 
-  <form #loginForm="ngForm" novalidate>
+  <!-- <form #loginForm="ngForm" novalidate> -->
+  <form #loginForm="ngForm" validate>
     <ion-list>
       <ion-item>
-        <ion-label position="stacked" color="primary">Username</ion-label>
+        <ion-label position="stacked" color="primary">Username \ Email</ion-label>
         <ion-input [(ngModel)]="login.username" name="username" type="text" #username="ngModel" spellcheck="false" autocapitalize="off"
+          (keyup.enter)="p.focus()"
           required>
         </ion-input>
       </ion-item>
@@ -30,7 +32,9 @@
 
       <ion-item>
         <ion-label position="stacked" color="primary">Password</ion-label>
-        <ion-input [(ngModel)]="login.password" name="password" type="password" #password="ngModel" required>
+        <ion-input [(ngModel)]="login.password" name="password" type="password" #p #password="ngModel"
+          (keyup.enter)="onLogin(loginForm)"
+          required>
         </ion-input>
       </ion-item>
 
@@ -39,11 +43,19 @@
           Password is required
         </p>
       </ion-text>
+
+      <!-- api error - wrong credentials ? -->
+      <ion-text color="danger">
+        <p [hidden]="!loginApiError" padding-left>
+          Invalid login credentials (Wrong Username\Email or password)
+        </p>
+      </ion-text>
     </ion-list>
 
     <ion-row responsive-sm>
       <ion-col>
-        <ion-button (click)="onLogin(loginForm)" type="submit" expand="block">Login</ion-button>
+        <!-- <ion-button (click)="onLogin(loginForm)" expand="block" type="submit">Login</ion-button> -->
+        <ion-button (click)="onLogin(loginForm)" expand="block">Login</ion-button>
       </ion-col>
       <ion-col>
         <ion-button (click)="onSignup()" color="light" expand="block">Signup</ion-button>
