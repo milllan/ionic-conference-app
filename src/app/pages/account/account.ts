@@ -14,6 +14,8 @@ import { UserData } from '../../providers/user-data';
 })
 export class AccountPage implements AfterViewInit {
   username: string;
+  strapi: any;
+  password: string;
 
   constructor(
     public alertCtrl: AlertController,
@@ -23,6 +25,7 @@ export class AccountPage implements AfterViewInit {
 
   ngAfterViewInit() {
     this.getUsername();
+    this.getStrapi();
   }
 
   updatePicture() {
@@ -63,8 +66,30 @@ export class AccountPage implements AfterViewInit {
     });
   }
 
-  changePassword() {
+  async changePassword() {
     console.log('Clicked to change password');
+    const alert = await this.alertCtrl.create({
+      header: 'Change Password',
+      buttons: [
+        'Cancel',
+        {
+          text: 'Ok',
+          handler: (data: any) => {
+            this.strapi.updateEntry('user', 'me', {'password': data.password});
+          }
+        }
+      ],
+      inputs: [
+        {
+          type: 'text',
+          name: 'password',
+          value: this.password,
+          placeholder: 'password'
+        }
+      ]
+    });
+    console.log('Clicked to change password x');
+    await alert.present();
   }
 
   logout() {
@@ -74,5 +99,11 @@ export class AccountPage implements AfterViewInit {
 
   support() {
     this.router.navigateByUrl('/support');
+  }
+
+  getStrapi() {
+    this.userData.getStrapi().then((strapi) => {
+      this.strapi = strapi;
+    });
   }
 }

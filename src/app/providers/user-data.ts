@@ -45,32 +45,33 @@ export class UserData {
   //   return this.strapi.login(username, password)
   // }
 
-  // login_promise_stari(username: string, password: string): Promise<any> {
-  //   return this.strapi.login(username, password).then(r => {      //console.log({r});
-  //     return this.storage.set(this.HAS_LOGGED_IN, true).then(() => {
-  //       this.setUsername(username);
-  //       return this.events.publish('user:login');
-  //     });
-  //   }).catch((err) => {
-  //     return this.storage.set(this.HAS_LOGGED_IN, false).then(() => {        //console.log({err});
-  //       return this.events.publish('user:logout');
-  //     });
-  //   });
+  // async login(username: string, password: string): Promise<any> {
+  //   try {
+  //     const auth = await this.strapi.login(username, password);      console.log({auth});
+  //     //this.setUser(auth['user']);
+  //     console.log(await this.strapi.getEntries('user'));
+  //     this.strapi.updateEntry('user', '5b75c2a6b1960a0a3c286a6c', {Name: 'Mile'});
+  //     await this.storage.set(this.HAS_LOGGED_IN, true);
+  //     this.setUsername(username);
+  //     return this.events.publish('user:login');
+  //   } catch (err) {
+  //     await this.storage.set(this.HAS_LOGGED_IN, false);      // console.log({err});
+  //     return this.events.publish('user:logout');
+  //   }
   // }
 
-  async login(username: string, password: string): Promise<any> {
-    try {
-      const authCreds = await this.strapi.login(username, password);      console.log({authCreds});
-      this.setUser(authCreds['user']);
-      console.log(await this.strapi.getEntries('user'));
-      this.strapi.updateEntry('user', '5b75c2a6b1960a0a3c286a6c', {Name: 'Mile'});
-      await this.storage.set(this.HAS_LOGGED_IN, true);
-      this.setUsername(username);
-      return this.events.publish('user:login');
-    } catch (err) {
-      await this.storage.set(this.HAS_LOGGED_IN, false);      // console.log({err});
-      return this.events.publish('user:logout');
-    }
+  login(username: string, password: string): Promise<any> {
+    return this.strapi.login(username, password).then(async auth => {      //console.log({auth});
+      //this.setUser(auth['user']);      //  console.log(await this.strapi.getEntries('user'));
+      return this.storage.set(this.HAS_LOGGED_IN, true).then(() => {
+        this.setUsername(username);
+        return this.events.publish('user:login');
+      });
+    }).catch((err) => {
+      return this.storage.set(this.HAS_LOGGED_IN, false).then(() => {        //console.log({err});
+        return this.events.publish('user:logout');
+      });
+    });
   }
 
   signup(username: string): Promise<any> {
@@ -88,8 +89,17 @@ export class UserData {
     });
   }
 
-  setUsername(username: string): Promise<any> {
-    return this.storage.set('username', username);
+  // setUsername(username: string): Promise<any> {
+  //   return this.strapi.updateEntry('user', 'me', {'username': username}).then(() => {
+  //     return this.storage.set('username', username);
+  //   });
+  // }
+
+  async setUsername(username: string): Promise<any> {
+    await this.strapi.updateEntry('user', 'me', {
+      'username': username
+    });
+    return await this.storage.set('username', username);
   }
 
   getUsername(): Promise<string> {
@@ -119,5 +129,11 @@ export class UserData {
   async getUser(): Promise<any> {
     const userStr = await this.storage.get('user');
     return await JSON.parse(userStr);
+  }
+
+
+
+  async getStrapi(): Promise<any> {
+    return this.strapi;
   }
 }

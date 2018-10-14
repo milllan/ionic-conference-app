@@ -32,11 +32,9 @@ export class LoginPage {
   }
 
   async onLogin(form: NgForm) {
-    console.log('onLogin USO - form.valid?', form.valid);
     this.submitted = true;
 
     if (form.valid) {
-      console.log('form.valid', form.valid, form);
       await this.userData.login(this.login.username, this.login.password);
       this.userData.isLoggedIn().then(isLoggedIn => {
         if (isLoggedIn) {
