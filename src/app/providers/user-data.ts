@@ -61,14 +61,14 @@ export class UserData {
   // }
 
   login(username: string, password: string): Promise<any> {
-    return this.strapi.login(username, password).then(async auth => {      //console.log({auth});
-      //this.setUser(auth['user']);      //  console.log(await this.strapi.getEntries('user'));
+    return this.strapi.login(username, password).then(async auth => {      // console.log({auth});
+      // this.setUser(auth['user']);      //  console.log(await this.strapi.getEntries('user'));
       return this.storage.set(this.HAS_LOGGED_IN, true).then(() => {
         this.setUsername(username);
         return this.events.publish('user:login');
       });
     }).catch((err) => {
-      return this.storage.set(this.HAS_LOGGED_IN, false).then(() => {        //console.log({err});
+      return this.storage.set(this.HAS_LOGGED_IN, false).then(() => {        // console.log({err});
         return this.events.publish('user:logout');
       });
     });
