@@ -14,7 +14,8 @@ import { UserData } from '../../providers/user-data';
 })
 export class AccountPage implements AfterViewInit {
   username: string;
-  strapi: any;
+  auth: any;
+  userid: string;
   password: string;
 
   constructor(
@@ -25,7 +26,7 @@ export class AccountPage implements AfterViewInit {
 
   ngAfterViewInit() {
     this.getUsername();
-    this.getStrapi();
+    this.getAuth();
   }
 
   updatePicture() {
@@ -43,7 +44,7 @@ export class AccountPage implements AfterViewInit {
         {
           text: 'Ok',
           handler: (data: any) => {
-            this.userData.setUsername(data.username);
+            this.userData.updateUsername(data.username);
             this.getUsername();
           }
         }
@@ -66,6 +67,12 @@ export class AccountPage implements AfterViewInit {
     });
   }
 
+  getUserId() {
+    this.userData.getUserId().then((userid) => {
+      this.userid = userid;
+    });
+  }
+
   async changePassword() {
     console.log('Clicked to change password');
     const alert = await this.alertCtrl.create({
@@ -74,8 +81,11 @@ export class AccountPage implements AfterViewInit {
         'Cancel',
         {
           text: 'Ok',
-          handler: (data: any) => {
-            this.strapi.updateEntry('user', 'me', {'password': data.password});
+          handler: async (data: any) => {
+            const userId = await this.getUserId();
+            this.auth.updateEntry('users', userId, {
+              'password': data.password
+            });
           }
         }
       ],
@@ -93,7 +103,9 @@ export class AccountPage implements AfterViewInit {
   }
 
   logout() {
+    console.log('account - logout');
     this.userData.logout();
+    console.log('account - logout 2');
     this.router.navigateByUrl('/login');
   }
 
@@ -101,9 +113,9 @@ export class AccountPage implements AfterViewInit {
     this.router.navigateByUrl('/support');
   }
 
-  getStrapi() {
-    this.userData.getStrapi().then((strapi) => {
-      this.strapi = strapi;
+  getAuth() {
+    this.userData.getAuth().then((auth) => {
+      this.auth = auth;
     });
   }
 }

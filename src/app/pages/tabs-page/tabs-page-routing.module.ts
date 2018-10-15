@@ -10,6 +10,10 @@ import { SessionDetailPage } from '../session-detail/session-detail';
 import { SpeakerDetailPage } from '../speaker-detail/speaker-detail';
 import { SpeakerListPage } from '../speaker-list/speaker-list';
 
+import { WorkorderListPage } from '../workorder-list/workorder-list';
+import { WorkorderDetailPage } from '../workorder-detail/workorder-detail';
+
+
 
 const routes: Routes = [
   {
@@ -54,7 +58,29 @@ const routes: Routes = [
         path: 'about',
         component: AboutPage,
         outlet: 'about'
-      }
+      },
+      // tab WO
+      {
+        path: 'workorders',
+        component: WorkorderListPage,
+        outlet: 'workorders'
+      },
+      {
+        path: 'workorder-details/:workorderId',
+        component: WorkorderDetailPage,
+        outlet: 'workorder'
+      },
+      // tab TECH
+      // {
+      //   path: 'technicians',
+      //   component: TechnicianListPage,
+      //   outlet: 'technicians'
+      // },
+      // {
+      //   path: 'technician/:sessionId',
+      //   component: TechnicianDetailPage,
+      //   outlet: 'technicians'
+      // },
     ]
   }
 ];

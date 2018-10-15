@@ -11,6 +11,8 @@ import { ScheduleModule } from '../schedule/schedule.module';
 import { SessionDetailModule } from '../session-detail/session-detail.module';
 import { SpeakerDetailModule } from '../speaker-detail/speaker-detail.module';
 import { SpeakerListModule } from '../speaker-list/speaker-list.module';
+import { WorkorderListModule } from '../workorder-list/workorder-list.module';
+import { WorkorderDetailModule } from '../workorder-detail/workorder-detail.module';
 
 @NgModule({
   imports: [
@@ -22,7 +24,9 @@ import { SpeakerListModule } from '../speaker-list/speaker-list.module';
     SessionDetailModule,
     SpeakerDetailModule,
     SpeakerListModule,
-    TabsPageRoutingModule
+    TabsPageRoutingModule,
+    WorkorderListModule,
+    WorkorderDetailModule
   ],
   declarations: [
     TabsPage,
