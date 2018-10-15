@@ -10,7 +10,8 @@ import { SessionDetailPage } from '../session-detail/session-detail';
 import { SpeakerDetailPage } from '../speaker-detail/speaker-detail';
 import { SpeakerListPage } from '../speaker-list/speaker-list';
 
-import { WorkOrderListPage } from '../workorder-list/workorder-list';
+import { WorkorderListPage } from '../workorder-list/workorder-list';
+import { WorkorderDetailPage } from '../workorder-detail/workorder-detail';
 
 
 
@@ -61,14 +62,14 @@ const routes: Routes = [
       // tab WO
       {
         path: 'workorders',
-        component: WorkOrderListPage,
+        component: WorkorderListPage,
         outlet: 'workorders'
       },
-      // {
-      //   path: 'workorder/:workorderId',
-      //   component: WorkorderDetailPage,
-      //   outlet: 'workorder'
-      // },
+      {
+        path: 'workorder-details/:workorderId',
+        component: WorkorderDetailPage,
+        outlet: 'workorder'
+      },
       // tab TECH
       // {
       //   path: 'technicians',

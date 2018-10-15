@@ -12,7 +12,7 @@ import { UserData } from '../../providers/user-data';
   styleUrls: ['./workorder-list.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class WorkOrderListPage {
+export class WorkorderListPage {
   @ViewChild('refresherRef') refresherRef: Refresher;
   // Gets a reference to the list element
   @ViewChild('workorderList') workorderList: List;
@@ -69,7 +69,7 @@ export class WorkOrderListPage {
   goToWorkorderDetail(sessionData: any) {
     // go to the session detail page
     // and pass in the session data
-    this.router.navigateByUrl(`app/tabs/(workorders:workorder/${sessionData.id})`);
+    this.router.navigateByUrl(`app/tabs/(workorders:workorder-details/${sessionData.id})`);
   }
 
   async addFavorite(slidingItem: HTMLIonItemSlidingElement, sessionData: any) {
@@ -101,12 +101,12 @@ export class WorkOrderListPage {
   async removeFavorite(slidingItem: HTMLIonItemSlidingElement, sessionData: any, title: string) {
     const alert = await this.alertCtrl.create({
       header: title,
-      message: 'Would you like to remove this session from your favorites?',
+      message: 'Would you like to remove this work order from your favorites?',
       buttons: [
         {
           text: 'Cancel',
           handler: () => {
-            // they clicked the cancel button, do not remove the session
+            // they clicked the cancel button, do not remove the wo
             // close the sliding item and hide the option buttons
             slidingItem.close();
           }
@@ -114,7 +114,7 @@ export class WorkOrderListPage {
         {
           text: 'Remove',
           handler: () => {
-            // they want to remove this session from their favorites
+            // they want to remove this wo from their favorites
             this.user.removeFavorite(sessionData.name);
             this.updateWorkorder();
 
@@ -132,6 +132,9 @@ export class WorkOrderListPage {
   //   fabButton.activated = !fabButton.activated;
   //   fabList.activated = !fabList.activated;
   // }
+  addWorkOrder(fabButton: HTMLIonFabButtonElement) {
+    fabButton.activated = !fabButton.activated;
+  }
 
   // async openSocial(network: string, fab: HTMLIonFabElement) {
   //   const loading = await this.loadingCtrl.create({
@@ -144,7 +147,6 @@ export class WorkOrderListPage {
   // }
 
   doRefresh(refresher: Refresher) {
-  // doRefresh(refresher) {
     this.confData.getTimeline(this.dayIndex, this.queryText, this.excludeTracks, this.segment).subscribe((data: any) => {
       this.shownSessions = data.shownSessions;
       this.groups = data.groups;
@@ -156,20 +158,11 @@ export class WorkOrderListPage {
         this.refresherRef.complete();  // Works
 
         const toast = await this.toastCtrl.create({
-          message: 'Sessions have been updated.',
+          message: 'Work Orders have been updated.',
           duration: 3000
         });
         await toast.present();
       }, 1000);
     });
   }
-
-  // doRefresh(refresher) {
-  //   console.log('Begin async operation', refresher);
-
-  //   setTimeout(() => {
-  //     console.log('Async operation has ended');
-  //     refresher.target.complete();
-  //   }, 2000);
-  // }
 }
