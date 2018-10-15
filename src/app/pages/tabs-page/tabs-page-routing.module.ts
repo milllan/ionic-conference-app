@@ -68,7 +68,7 @@ const routes: Routes = [
       {
         path: 'workorder-details/:workorderId',
         component: WorkorderDetailPage,
-        outlet: 'workorder'
+        outlet: 'workorders'
       },
       // tab TECH
       // {

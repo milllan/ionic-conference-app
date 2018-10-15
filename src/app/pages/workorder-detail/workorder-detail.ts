@@ -1,17 +1,19 @@
-import { Component } from '@angular/core';
-
+import { Component, ViewEncapsulation } from '@angular/core';
 import { ConferenceData } from '../../providers/conference-data';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'page-workorder-detail',
-  templateUrl: 'workorder-detail.html'
+  templateUrl: 'workorder-detail.html',
+  // styleUrls: ['./workorder-detail.scss'],
+  // encapsulation: ViewEncapsulation.None
 })
 export class WorkorderDetailPage {
   workorder: any;
 
   constructor(
     private dataProvider: ConferenceData,
+    // private router: Router,
     private route: ActivatedRoute
   ) {}
 
@@ -25,9 +27,13 @@ export class WorkorderDetailPage {
       ) {
         const workorderId = this.route.snapshot.paramMap.get('workorderId');
         for (const group of data.workorder[0].groups) {
-          if (group && group.workorders) {
-            for (const workorder of group.workorders) {
+          // console.log('data.workorder[0].groups', data.workorder[0].groups);
+          if (group && group.workordersgroup) {
+            console.log('group.workordersgroup', group.workordersgroup);
+            for (const workorder of group.workordersgroup) {
+              console.log('workorder.id', workorder.id, 'workorderId', workorderId);
               if (workorder && workorder.id === workorderId) {
+                console.log('   match!');
                 this.workorder = workorder;
                 break;
               }
@@ -37,4 +43,8 @@ export class WorkorderDetailPage {
       }
     });
   }
+
+  // goToWorkorderDetail(session: any) {
+  //   this.router.navigateByUrl(`app/tabs/(workorders:workorder-details/${session.id})`);
+  // }
 }
