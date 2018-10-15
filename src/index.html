@@ -22,11 +22,11 @@
   <link rel="apple-touch-icon" href="assets/img/Urban-Hawks-icon.png">
 
   <script>
-    // if ('serviceWorker' in navigator) {
-    //   navigator.serviceWorker.register('service-worker.js')
-    //     .then(() => console.log('service worker installed'))
-    //     .catch(err => console.log('Error', err));
-    // }
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => console.log('service worker installed'))
+        .catch(err => console.log('Error', err));
+    }
   </script>
 </head>
 

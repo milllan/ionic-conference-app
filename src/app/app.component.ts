@@ -34,7 +34,17 @@ export class AppComponent implements OnInit {
       title: 'About',
       url: '/app/tabs/(about:about)',
       icon: 'information-circle'
-    }
+    },
+    {
+      title: 'Work Orders',
+      url: '/app/tabs/(workorders:workorders)',
+      icon: 'calendar'
+    },
+    // {
+    //   title: 'Technicians',
+    //   url: '/app/tabs/(technicians:technicians)',
+    //   icon: 'contacts'
+    // },
   ];
   loggedIn = false;
 
@@ -111,7 +121,8 @@ export class AppComponent implements OnInit {
 
   logout() {
     this.userData.logout().then(() => {
-      return this.navigate('/app/tabs/(schedule:schedule)');
+      // return this.navigate('/app/tabs/(schedule:schedule)');
+      return this.navigate('/login');
     });
   }
 
