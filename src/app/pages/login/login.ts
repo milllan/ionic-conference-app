@@ -38,7 +38,7 @@ export class LoginPage {
       await this.userData.login(this.login.username, this.login.password);
       this.userData.isLoggedIn().then(isLoggedIn => {
         if (isLoggedIn) {
-          this.router.navigateByUrl('/app/tabs/(schedule:schedule)');
+          this.router.navigateByUrl('/app/tabs/(workorders/workorders)');
         } else {
           this.loginApiError = true;
         }
