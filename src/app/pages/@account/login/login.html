@@ -9,9 +9,12 @@
 </ion-header>
 
 <ion-content>
-  <div class="login-logo">
-    <a href="//www.urban-hawks.com/"  target="_blank"><img src="assets/img/Urban-Hawks-logo-wide.png" alt="Ionic logo"></a>
-  </div>
+  <!-- <div class="login-logo">
+    <a href="//www.urban-hawks.com/"  target="_blank">
+      <img src="assets/img/Urban-Hawks-logo-wide.png" alt="Ionic logo">
+    </a>
+  </div> -->
+  <account-logo></account-logo>
 
   <!-- <form #loginForm="ngForm" novalidate> -->
   <form #loginForm="ngForm" validate>
@@ -52,15 +55,15 @@
       </ion-text>
     </ion-list>
 
-    <ion-row responsive-sm>
-      <ion-col>
+    <ion-row responsive-sm >
+      <ion-col size="12" size-xs="12" size-sm="12" size-md>
         <!-- <ion-button (click)="onLogin(loginForm)" expand="block" type="submit">Login</ion-button> -->
         <ion-button (click)="onLogin(loginForm)" expand="block">Login</ion-button>
       </ion-col>
-      <ion-col>
+      <ion-col size="6" size-xs="12" size-sm="6" size-md>
         <ion-button (click)="onSignup()" color="light" expand="block">Signup</ion-button>
       </ion-col>
-      <ion-col>
+      <ion-col size="6" size-xs="12" size-sm="6" size-md>
         <ion-button (click)="onForgotPassword(loginForm)" color="light" expand="block">Forgot Password</ion-button>
       </ion-col>
     </ion-row>

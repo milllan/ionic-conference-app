@@ -194,3 +194,32 @@
 // is used by default for Windows.
 
 // @import "roboto";
+
+
+
+/* Mill custom 2018.10.17 */
+
+// @import "ionic.theme.default";
+
+/* This proportion keeps the same behaviour as default,
+but through flex instead of relying on max-width */
+/* Now the width of the side pane is still 28% of the screen,
+but we can use absolute units for the max,
+so that the side pane does not grow too big on big screens: */
+// https://forum.ionicframework.com/t/set-width-of-menu-on-split-pane/83986/10
+.md {
+
+  .split-pane-visible >.split-pane-side {
+    flex-grow: 21;
+  }
+  
+  .split-pane-visible >.split-pane-main {
+    flex-grow: 79;
+  }
+
+  .split-pane-visible >.split-pane-side {
+    min-width: 180px; /* Default: 270px */
+    max-width: 240px;
+  }
+
+}

@@ -10,6 +10,8 @@ import { IonicStorageModule } from '@ionic/storage';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+// import { AccountLogoComponent } from './components/account-logo/account-logo.component';
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -18,7 +20,10 @@ import { AppComponent } from './app.component';
     IonicModule.forRoot(),
     IonicStorageModule.forRoot()
   ],
-  declarations: [AppComponent],
+  declarations: [
+    AppComponent,
+    // AccountLogoComponent
+  ],
   providers: [InAppBrowser, SplashScreen, StatusBar],
   bootstrap: [AppComponent]
 })

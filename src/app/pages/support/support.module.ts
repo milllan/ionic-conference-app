@@ -5,12 +5,16 @@ import { IonicModule } from '@ionic/angular';
 import { SupportPage } from './support';
 import { SupportPageRoutingModule } from './support-routing.module';
 
+import { AccountLogoComponentModule } from '../../components/account-logo/account-logo.module';
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    SupportPageRoutingModule
+    SupportPageRoutingModule,
+
+    AccountLogoComponentModule
   ],
   declarations: [
     SupportPage,

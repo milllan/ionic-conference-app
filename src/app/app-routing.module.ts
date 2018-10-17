@@ -10,7 +10,7 @@ const routes: Routes = [
   },
   {
     path: 'account',
-    loadChildren: './pages/@user/account/account.module#AccountModule'
+    loadChildren: './pages/@account/account/account.module#AccountModule'
   },
   {
     path: 'support',
@@ -18,11 +18,11 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    loadChildren: './pages/@user/login/login.module#LoginModule'
+    loadChildren: './pages/@account/login/login.module#LoginModule'
   },
   {
     path: 'signup',
-    loadChildren: './pages/@user/signup/signup.module#SignUpModule'
+    loadChildren: './pages/@account/signup/signup.module#SignUpModule'
   },
   {
     path: 'app',
@@ -33,6 +33,10 @@ const routes: Routes = [
     loadChildren: './pages/tutorial/tutorial.module#TutorialModule'
   },
   // { path: 'forgot-password', loadChildren: './forgot-password/forgot-password.module#ForgotPasswordPageModule' }
+  {
+    path: 'forgot-password',
+    loadChildren: './pages/@account/forgot-password/forgot-password.module#ForgotPasswordModule'
+  },
 
 ];
 

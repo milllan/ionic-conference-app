@@ -6,15 +6,19 @@ import { IonicModule } from '@ionic/angular';
 import { LoginPage } from './login';
 import { LoginPageRoutingModule } from './login-routing.module';
 
+import { AccountLogoComponentModule } from '../../../components/account-logo/account-logo.module';
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    LoginPageRoutingModule
+    LoginPageRoutingModule,
+
+    AccountLogoComponentModule
   ],
   declarations: [
-    LoginPage,
+    LoginPage
   ]
 })
 export class LoginModule { }

@@ -9,15 +9,17 @@
 
 <ion-content>
 
-  <div class="signup-logo">
+  <!-- <div class="signup-logo">
     <a href="//www.urban-hawks.com/"  target="_blank"><img src="assets/img/Urban-Hawks-logo-wide.png" alt="Ionic logo"></a>
-  </div>
+  </div> -->
+  <account-logo></account-logo>
 
   <form #signupForm="ngForm" novalidate>
-    <ion-list lines="none">
+    <!-- <ion-list lines="none"> -->
+    <ion-list>
       <ion-item>
         <ion-label position="stacked" color="primary">Email</ion-label>
-        <ion-input [(ngModel)]="signup.username" name="username" type="text" #username="ngModel" required>
+        <ion-input [(ngModel)]="signup.username" name="username" type="text" #username="ngModel"required>
         </ion-input>
       </ion-item>
       <ion-text color="danger">

@@ -9,12 +9,14 @@
 </ion-header>
 
 <ion-content>
-  <div class="support-logo">
+  <!-- <div class="support-logo">
     <a href="//www.urban-hawks.com/"  target="_blank"><img src="assets/img/Urban-Hawks-logo-wide.png" alt="Ionic logo"></a>
-  </div>
+  </div> -->
+  <account-logo></account-logo>
 
   <form #submitForm="ngForm" novalidate (ngSubmit)="submit(submitForm)">
-    <ion-list lines="none">
+    <!-- <ion-list lines="none"> -->
+    <ion-list>
       <ion-item>
         <ion-label position="stacked" color="primary">Enter your support message below</ion-label>
         <ion-textarea [(ngModel)]="supportMessage" name="supportQuestion" #supportQuestion="ngModel" rows="6" required></ion-textarea>
