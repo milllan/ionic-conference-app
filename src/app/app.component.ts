@@ -16,6 +16,11 @@ import { UserData } from './providers/user-data';
 export class AppComponent implements OnInit {
   appPages = [
     {
+      title: 'Work Orders',
+      url: '/app/tabs/(workorders:workorders)',
+      icon: 'calendar'
+    },
+    {
       title: 'Schedule',
       url: '/app/tabs/(schedule:schedule)',
       icon: 'calendar'
@@ -34,11 +39,6 @@ export class AppComponent implements OnInit {
       title: 'About',
       url: '/app/tabs/(about:about)',
       icon: 'information-circle'
-    },
-    {
-      title: 'Work Orders',
-      url: '/app/tabs/(workorders:workorders)',
-      icon: 'calendar'
     },
     // {
     //   title: 'Technicians',
