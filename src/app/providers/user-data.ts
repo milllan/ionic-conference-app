@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Events } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
-import Strapi from 'strapi-sdk-javascript';
-// import Strapi from 'strapi-sdk-javascript/build/main';
 import * as Config from '../config';
+import Strapi from 'strapi-sdk-javascript';
 
 
 @Injectable({
@@ -12,9 +11,7 @@ import * as Config from '../config';
 export class UserData {
   _favorites: string[] = [];
   HAS_LOGGED_IN = 'hasLoggedIn';
-  // HAS_LOGGED_IN = false;
   HAS_SEEN_TUTORIAL = 'hasSeenTutorial';
-  // HAS_SEEN_TUTORIAL = false;
 
   auth = new Strapi(Config.STRAPI_ENDPOINT);   // 'http://localhost:1337';
   user = {};
@@ -23,7 +20,7 @@ export class UserData {
     public events: Events,
     public storage: Storage
   ) {
-    console.log('this', UserData);
+    console.log('this (UserData)', UserData);
   }
 
   hasFavorite(sessionName: string): boolean {
@@ -57,11 +54,11 @@ export class UserData {
   // }
 
   login(username: string, password: string): Promise<any> {
-    return this.auth.login(username, password).then(async auth => {      // console.log({auth});
-      // this.setUser(auth['user']);      //  console.log(await this.auth.getEntries('user'));
+    return this.auth.login(username, password).then(async auth => {
       return this.storage.set(this.HAS_LOGGED_IN, true).then(() => {
         this.setUserId(auth['user']['id']);
-        this.setUsername(username);
+        this.setUsername(auth['user']['username']);
+        this.setEmail(auth['user']['email']);
         return this.events.publish('user:login');
       });
     }).catch((err) => {
@@ -74,6 +71,7 @@ export class UserData {
   signup(username: string): Promise<any> {
     return this.storage.set(this.HAS_LOGGED_IN, true).then(() => {
       this.setUsername(username);
+      this.setEmail(username);
       return this.events.publish('user:signup');
     });
   }
@@ -81,10 +79,25 @@ export class UserData {
   logout(): Promise<any> {
     return this.storage.remove(this.HAS_LOGGED_IN).then(() => {
       this.storage.remove('userid');
-      return this.storage.remove('username');
+      this.storage.remove('username');
+      this.storage.remove('jwt');
+      return this.storage.remove('email');
     }).then(() => {
-      this.events.publish('user:logout');
+      return this.events.publish('user:logout');
     });
+  }
+
+  forgotPassword(email: string, url: string): Promise<any> {
+    return this.auth.forgotPassword(email, url)
+      .then(async auth => {
+        console.log('Your user received an email');
+        // return this.storage.set(this.HAS_LOGGED_IN, true).then(() => {
+        //   this.setUserId(auth['user']['id']);
+        //   this.setUsername(username);
+        //   return this.events.publish('user:login');
+        }).catch((err) => {
+        console.log('An error occurred:', err);
+        });
   }
 
   async setUserId(userid: string) {
@@ -111,6 +124,16 @@ export class UserData {
     });
   }
 
+  async setEmail(email: string): Promise<any> {
+    return await this.storage.set('email', email);
+  }
+
+  getEmail(): Promise<string> {
+    return this.storage.get('email').then((value) => {
+      return value;
+    });
+  }
+
   isLoggedIn(): Promise<boolean> {
     return this.storage.get(this.HAS_LOGGED_IN).then((value) => {
       return value === true;
@@ -124,15 +147,15 @@ export class UserData {
   }
 
 
-  setUser(user: {}): Promise<any> {
-    this.user = user;
-    return this.storage.set('user', JSON.stringify(user));
-  }
+  // setUser(user: {}): Promise<any> {
+  //   this.user = user;
+  //   return this.storage.set('user', JSON.stringify(user));
+  // }
 
-  async getUser(): Promise<any> {
-    const userStr = await this.storage.get('user');
-    return await JSON.parse(userStr);
-  }
+  // async getUser(): Promise<any> {
+  //   const userStr = await this.storage.get('user');
+  //   return await JSON.parse(userStr);
+  // }
 
 
 

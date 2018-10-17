@@ -10,7 +10,7 @@ const routes: Routes = [
   },
   {
     path: 'account',
-    loadChildren: './pages/account/account.module#AccountModule'
+    loadChildren: './pages/@user/account/account.module#AccountModule'
   },
   {
     path: 'support',
@@ -18,11 +18,11 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    loadChildren: './pages/login/login.module#LoginModule'
+    loadChildren: './pages/@user/login/login.module#LoginModule'
   },
   {
     path: 'signup',
-    loadChildren: './pages/signup/signup.module#SignUpModule'
+    loadChildren: './pages/@user/signup/signup.module#SignUpModule'
   },
   {
     path: 'app',
@@ -31,7 +31,9 @@ const routes: Routes = [
   {
     path: 'tutorial',
     loadChildren: './pages/tutorial/tutorial.module#TutorialModule'
-  }
+  },
+  // { path: 'forgot-password', loadChildren: './forgot-password/forgot-password.module#ForgotPasswordPageModule' }
+
 ];
 
 @NgModule({
