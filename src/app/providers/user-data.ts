@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Events } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
-import * as Config from '../config';
-import Strapi from 'strapi-sdk-javascript';
 
+import { ApiService } from './api.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,12 +12,10 @@ export class UserData {
   HAS_LOGGED_IN = 'hasLoggedIn';
   HAS_SEEN_TUTORIAL = 'hasSeenTutorial';
 
-  auth = new Strapi(Config.STRAPI_ENDPOINT);   // 'http://localhost:1337';
-  user = {};
-
   constructor(
     public events: Events,
-    public storage: Storage
+    public storage: Storage,
+    private apiService: ApiService,
   ) {
     console.log('this (UserData)', UserData);
   }
@@ -53,15 +50,15 @@ export class UserData {
   //   }
   // }
 
-  login(username: string, password: string): Promise<any> {
-    return this.auth.login(username, password).then(async auth => {
+  async login(username: string, password: string): Promise<any> {
+    return this.apiService.login(username, password).then(async auth => {
       return this.storage.set(this.HAS_LOGGED_IN, true).then(() => {
         this.setUserId(auth['user']['id']);
         this.setUsername(auth['user']['username']);
         this.setEmail(auth['user']['email']);
         return this.events.publish('user:login');
       });
-    }).catch((err) => {
+    }).catch(err => {
       return this.storage.set(this.HAS_LOGGED_IN, false).then(() => {        // console.log({err});
         return this.events.publish('user:logout');
       });
@@ -88,7 +85,7 @@ export class UserData {
   }
 
   forgotPassword(email: string, url: string): Promise<any> {
-    return this.auth.forgotPassword(email, url)
+    return this.apiService.forgotPassword(email, url)
       .then(async auth => {
         console.log('Your user received an email');
         // return this.storage.set(this.HAS_LOGGED_IN, true).then(() => {
@@ -100,6 +97,17 @@ export class UserData {
         });
   }
 
+  async updateUsername(username: string): Promise<any> {
+    const userId = await this.getUserId();
+    return await this.apiService.updateEntry('users', userId, {
+      'username': username
+    }).then((auth) => {
+      this.setUsername(auth['username']);
+      // this.cdRef.detectChanges(); // force change detection (zone lost)
+      return auth['username'];
+    });
+  }
+
   async setUserId(userid: string) {
     return await this.storage.set('userid', userid);
   }
@@ -107,12 +115,6 @@ export class UserData {
   async getUserId(): Promise<string> {
     return await this.storage.get('userid');
   }
-
-  // setUsername(username: string): Promise<any> {
-  //   return this.auth.updateEntry('user', 'me', {'username': username}).then(() => {
-  //     return this.storage.set('username', username);
-  //   });
-  // }
 
   async setUsername(username: string): Promise<any> {
     return await this.storage.set('username', username);
@@ -156,19 +158,4 @@ export class UserData {
   //   const userStr = await this.storage.get('user');
   //   return await JSON.parse(userStr);
   // }
-
-
-
-  async getAuth(): Promise<any> {
-    return this.auth;
-  }
-
-  async updateUsername(username: string): Promise<any> {
-    const userId = await this.getUserId();
-    await this.auth.updateEntry('users', userId, {
-      'username': username
-    }).then(() => {
-      this.setUsername(username);
-    });
-  }
 }

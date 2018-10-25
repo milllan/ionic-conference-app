@@ -1,8 +1,8 @@
 {
-  "name": "Ionic Conference",
-  "short_name": "Ionic Conference",
-  "start_url": "index.html",
-  "display": "standalone",
+  "name": "UH Field Service Lite",
+  "short_name": "UHFS Lite",
+  "start_url": "/",
+  "display": "fullscreen",
   "icons": [{
     "src": "img/UH-eye.png",
     "sizes": "192x192",

@@ -9,6 +9,8 @@ import { IonicStorageModule } from '@ionic/storage';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { PwaInstallBtnComponent } from './pwa-install-btn/pwa-install-btn.component';
+import { ApiService } from './providers/api.service';
 
 // import { AccountLogoComponent } from './components/account-logo/account-logo.component';
 
@@ -22,6 +24,7 @@ import { AppComponent } from './app.component';
   ],
   declarations: [
     AppComponent,
+    PwaInstallBtnComponent,
     // AccountLogoComponent
   ],
   providers: [InAppBrowser, SplashScreen, StatusBar],
