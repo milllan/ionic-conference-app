@@ -5,11 +5,14 @@
   "license": "Apache-2.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
+    "//": "ng serve, ng build - default",
+    "start": "ng serve --single --host 0.0.0.0 --port $PORT --disable-host-check",
+    "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
-    "precommit": "npm run lint"
+    "precommit": "npm run lint",
+    "now-start": "serve ./www --single",
+    "now-build": "echo 'Build locally'"
   },
   "repository": {
     "type": "git",
@@ -23,7 +26,9 @@
     "@angular/http": "^6.1.10",
     "@angular/platform-browser": "^6.1.10",
     "@angular/platform-browser-dynamic": "^6.1.10",
+    "@angular/pwa": "^0.10.2",
     "@angular/router": "^6.1.10",
+    "@angular/service-worker": "^6.1.10",
     "@ionic-native/core": "5.0.0-beta.15",
     "@ionic-native/in-app-browser": "5.0.0-beta.15",
     "@ionic-native/splash-screen": "5.0.0-beta.15",
