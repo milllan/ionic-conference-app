@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { UserData } from '../../../providers/user-data';
 import { UserOptions } from '../../../interfaces/user-options';
 
-import { AccountLogoComponent } from '../../../components/account-logo/account-logo.component';
+// import { AccountLogoComponent } from '../../../components/account-logo/account-logo.component';
 
 @Component({
   selector: 'page-login',

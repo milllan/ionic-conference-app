@@ -1,4 +1,6 @@
 export const environment = {
   production: true,
-  apuUrl: 'https://uhstrapi.app.sajtweb.net'
+  apiUrl: 'https://uhstrapi.app.sajtweb.net',
+  /* Set the time that the Access Token will expire at [2 days] */
+  sessionExpiresIn: 2 // days
 };

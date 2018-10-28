@@ -4,7 +4,10 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 export const environment = {
   production: false,
-  apiUrl: 'https://uhstrapi.app.sajtweb.net'
+  apiUrl: 'https://uhstrapi.app.sajtweb.net',
+  // Set the time that the Access Token will expire at [1 day]
+  sessionExpiresIn: 1
+  // JSON.stringify((1 * 24 * 60 * 60 * 1000) + new Date().getTime()),
 };
 
 /*
