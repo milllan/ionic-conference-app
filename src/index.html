@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Ionic Conference App</title>
+  <title>UH Field Service Lite</title>
 
   <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="format-detection" content="telephone=no">
@@ -17,17 +17,20 @@
   <base href="/">
 
   <link rel="icon" type="image/x-icon" href="assets/img/Urban-Hawks-icon.png">
-  <link rel="manifest" href="assets/manifest.json">
-
   <link rel="apple-touch-icon" href="assets/img/Urban-Hawks-icon.png">
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
   <script>
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js')
+      // navigator.serviceWorker.register('service-worker.js')
+      navigator.serviceWorker.register('ngsw-worker.js')
         .then(() => console.log('service worker installed'))
-        .catch(err => console.log('Error', err));
+        .catch(err => (!window.location.hostname === "localhost") ? console.log('Error', err) : null);
     }
   </script>
+  <link rel="manifest" href="assets/manifest.json">
+  <meta name="theme-color" content="#1976d2">
 </head>
 
 <body>
@@ -36,8 +39,9 @@
 
   <!-- Replace the API key with your own, see:
     https://developers.google.com/maps/documentation/javascript/get-api-key -->
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB8pf6ZdFQj5qw7rc_HSGrhUwQKfIe9ICw"></script>
+  <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB8pf6ZdFQj5qw7rc_HSGrhUwQKfIe9ICw"></script>
 
+  <noscript>Please enable JavaScript to continue using this application.</noscript>
 </body>
 
 </html>

@@ -9,9 +9,11 @@ import { IonicStorageModule } from '@ionic/storage';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+// import { PwaInstallBtnComponent } from './pwa-install-btn/pwa-install-btn.component';
+import { ApiService } from './providers/api.service';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
-
+// import { InstallPwaButtonComponent } from './components/install-pwa-button/install-pwa-button.component';
 // import { AccountLogoComponent } from './components/account-logo/account-logo.component';
 
 @NgModule({
@@ -22,9 +24,12 @@ import { environment } from '../environments/environment';
     IonicModule.forRoot(),
     IonicStorageModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    // ServiceWorkerModule.register('ngsw-worker.js')
   ],
   declarations: [
     AppComponent,
+    // PwaInstallBtnComponent,
+    // InstallPwaButtonComponent,
     // AccountLogoComponent
   ],
   providers: [InAppBrowser, SplashScreen, StatusBar],

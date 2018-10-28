@@ -1,9 +1,10 @@
-import { AfterViewInit, Component, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, ViewEncapsulation, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { AlertController } from '@ionic/angular';
 
 import { UserData } from '../../../providers/user-data';
+import { ApiService } from '../../../providers/api.service';
 
 
 @Component({
@@ -14,19 +15,22 @@ import { UserData } from '../../../providers/user-data';
 })
 export class AccountPage implements AfterViewInit {
   username: string;
-  auth: any;
-  userid: string;
+  // auth: any;
+  // userid: string;
   password: string;
 
   constructor(
     public alertCtrl: AlertController,
+    private cdRef: ChangeDetectorRef,
     public router: Router,
+    public apiService: ApiService,
     public userData: UserData
-  ) { }
+  ) {
+    this.username = '';
+  }
 
-  ngAfterViewInit() {
-    this.getUsername();
-    this.getAuth();
+  async ngAfterViewInit() {
+    this.username = await this.userData.getUsername();
   }
 
   updatePicture() {
@@ -43,9 +47,12 @@ export class AccountPage implements AfterViewInit {
         'Cancel',
         {
           text: 'Ok',
-          handler: (data: any) => {
-            this.userData.updateUsername(data.username);
-            this.getUsername();
+          handler: async (data: any) => {
+            this.userData.updateUsername(data.username).then(username => {
+              this.username = username;
+              // https://stackoverflow.com/questions/43871690/ionic-2-popup-handler-function-not-updating-variable
+              this.cdRef.detectChanges(); // force change detection (zone lost)
+            });
           }
         }
       ],
@@ -61,18 +68,6 @@ export class AccountPage implements AfterViewInit {
     await alert.present();
   }
 
-  getUsername() {
-    this.userData.getUsername().then((username) => {
-      this.username = username;
-    });
-  }
-
-  getUserId() {
-    this.userData.getUserId().then((userid) => {
-      this.userid = userid;
-    });
-  }
-
   async changePassword() {
     console.log('Clicked to change password');
     const alert = await this.alertCtrl.create({
@@ -82,8 +77,8 @@ export class AccountPage implements AfterViewInit {
         {
           text: 'Ok',
           handler: async (data: any) => {
-            const userId = await this.getUserId();
-            this.auth.updateEntry('users', userId, {
+            const userId = await this.userData.getUserId();
+            this.apiService.updateEntry('users', userId, {
               'password': data.password
             });
           }
@@ -103,19 +98,11 @@ export class AccountPage implements AfterViewInit {
   }
 
   logout() {
-    console.log('account - logout');
     this.userData.logout();
-    console.log('account - logout 2');
     this.router.navigateByUrl('/login');
   }
 
   support() {
     this.router.navigateByUrl('/support');
-  }
-
-  getAuth() {
-    this.userData.getAuth().then((auth) => {
-      this.auth = auth;
-    });
   }
 }

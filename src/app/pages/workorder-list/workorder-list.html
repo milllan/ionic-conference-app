@@ -39,6 +39,8 @@
     </ion-refresher-content>
   </ion-refresher>
   
+  <install-pwa-button></install-pwa-button>
+
   <ion-list #scheduleList [hidden]="shownSessions === 0">
     <ion-item-group *ngFor="let group of groups" [hidden]="group.hide">
       <ion-item-divider sticky>

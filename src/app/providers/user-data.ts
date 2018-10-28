@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Events } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
-import * as Config from '../config';
-import Strapi from 'strapi-sdk-javascript';
 
+import { ApiService } from './api.service';
+import { environment } from '../../environments/environment';
+
+const expiresIn = environment.sessionExpiresIn; /* STRAPI ENDPOINT, eg. http://localhost:1337 */
 
 @Injectable({
   providedIn: 'root'
@@ -13,12 +15,10 @@ export class UserData {
   HAS_LOGGED_IN = 'hasLoggedIn';
   HAS_SEEN_TUTORIAL = 'hasSeenTutorial';
 
-  auth = new Strapi(Config.STRAPI_ENDPOINT);   // 'http://localhost:1337';
-  user = {};
-
   constructor(
     public events: Events,
-    public storage: Storage
+    public storage: Storage,
+    private apiService: ApiService,
   ) {
     console.log('this (UserData)', UserData);
   }
@@ -53,18 +53,35 @@ export class UserData {
   //   }
   // }
 
-  login(username: string, password: string): Promise<any> {
-    return this.auth.login(username, password).then(async auth => {
+  async login(username: string, password: string): Promise<any> {
+    return this.apiService.login(username, password).then(async auth => {
       return this.storage.set(this.HAS_LOGGED_IN, true).then(() => {
-        this.setUserId(auth['user']['id']);
+        this.setUserId  (auth['user']['id']);
         this.setUsername(auth['user']['username']);
-        this.setEmail(auth['user']['email']);
+        this.setEmail   (auth['user']['email']);
+        // Set the time that the Access Token will expire at
+        const expiresAt = JSON.stringify((expiresIn * 24 * 60 * 60 * 1000) + new Date().getTime());
+        this.setSessionExpiryTime(expiresAt);
+
         return this.events.publish('user:login');
       });
-    }).catch((err) => {
+    }).catch(err => {
       return this.storage.set(this.HAS_LOGGED_IN, false).then(() => {        // console.log({err});
         return this.events.publish('user:logout');
       });
+    });
+  }
+
+  logout(): Promise<any> {
+    return this.storage.remove(this.HAS_LOGGED_IN).then(() => {
+      this.storage.remove('userid');
+      this.storage.remove('username');
+      this.storage.remove('jwt');
+
+      this.storage.remove('expires_at'); // remove session expiry time
+      return this.storage.remove('email');
+    }).then(() => {
+      return this.events.publish('user:logout');
     });
   }
 
@@ -76,19 +93,8 @@ export class UserData {
     });
   }
 
-  logout(): Promise<any> {
-    return this.storage.remove(this.HAS_LOGGED_IN).then(() => {
-      this.storage.remove('userid');
-      this.storage.remove('username');
-      this.storage.remove('jwt');
-      return this.storage.remove('email');
-    }).then(() => {
-      return this.events.publish('user:logout');
-    });
-  }
-
   forgotPassword(email: string, url: string): Promise<any> {
-    return this.auth.forgotPassword(email, url)
+    return this.apiService.forgotPassword(email, url)
       .then(async auth => {
         console.log('Your user received an email');
         // return this.storage.set(this.HAS_LOGGED_IN, true).then(() => {
@@ -100,6 +106,16 @@ export class UserData {
         });
   }
 
+  async updateUsername(username: string): Promise<any> {
+    const userId = await this.getUserId();
+    return await this.apiService.updateEntry('users', userId, {
+      'username': username
+    }).then((auth) => {
+      this.setUsername(auth['username']);
+      return auth['username'];
+    });
+  }
+
   async setUserId(userid: string) {
     return await this.storage.set('userid', userid);
   }
@@ -107,12 +123,6 @@ export class UserData {
   async getUserId(): Promise<string> {
     return await this.storage.get('userid');
   }
-
-  // setUsername(username: string): Promise<any> {
-  //   return this.auth.updateEntry('user', 'me', {'username': username}).then(() => {
-  //     return this.storage.set('username', username);
-  //   });
-  // }
 
   async setUsername(username: string): Promise<any> {
     return await this.storage.set('username', username);
@@ -134,18 +144,31 @@ export class UserData {
     });
   }
 
-  isLoggedIn(): Promise<boolean> {
-    return this.storage.get(this.HAS_LOGGED_IN).then((value) => {
-      return value === true;
-    });
-  }
-
   checkHasSeenTutorial(): Promise<string> {
     return this.storage.get(this.HAS_SEEN_TUTORIAL).then((value) => {
       return value;
     });
   }
 
+
+  async setSessionExpiryTime(expiresAt: string): Promise<any> {
+    return await this.storage.set('expires_at', expiresAt);
+  }
+
+  async isLoggedIn(): Promise<boolean> {
+    return this.storage.get(this.HAS_LOGGED_IN).then(async isLoggedIn => {
+      return isLoggedIn && await this.isSessionExpired();
+    });
+  }
+
+  private isSessionExpired(): Promise<boolean> {
+    // Check whether the current time is past the Access Token's expiry time
+    return this.storage.get('expires_at').then((expires_at) => {
+      console.log({expires_at});
+      return new Date().getTime() < expires_at;
+    })
+    .catch(err => false);
+  }
 
   // setUser(user: {}): Promise<any> {
   //   this.user = user;
@@ -156,19 +179,4 @@ export class UserData {
   //   const userStr = await this.storage.get('user');
   //   return await JSON.parse(userStr);
   // }
-
-
-
-  async getAuth(): Promise<any> {
-    return this.auth;
-  }
-
-  async updateUsername(username: string): Promise<any> {
-    const userId = await this.getUserId();
-    await this.auth.updateEntry('users', userId, {
-      'username': username
-    }).then(() => {
-      this.setUsername(username);
-    });
-  }
 }

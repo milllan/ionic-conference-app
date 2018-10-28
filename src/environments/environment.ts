@@ -3,7 +3,11 @@
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 export const environment = {
-  production: false
+  production: false,
+  apiUrl: 'https://uhstrapi.app.sajtweb.net',
+  // Set the time that the Access Token will expire at [1 day]
+  sessionExpiresIn: 1
+  // JSON.stringify((1 * 24 * 60 * 60 * 1000) + new Date().getTime()),
 };
 
 /*

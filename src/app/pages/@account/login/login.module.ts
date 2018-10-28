@@ -7,6 +7,7 @@ import { LoginPage } from './login';
 import { LoginPageRoutingModule } from './login-routing.module';
 
 import { AccountLogoComponentModule } from '../../../components/account-logo/account-logo.module';
+import { InstallPwaButtonComponentModule } from '../../../components/install-pwa-button/install-pwa-button.module';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { AccountLogoComponentModule } from '../../../components/account-logo/acc
     IonicModule,
     LoginPageRoutingModule,
 
-    AccountLogoComponentModule
+    AccountLogoComponentModule,
+    InstallPwaButtonComponentModule,
   ],
   declarations: [
     LoginPage
