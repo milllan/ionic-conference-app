@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'install-pwa-button',
@@ -11,7 +12,7 @@ export class InstallPwaButtonComponent implements OnInit {
   showBtn: any;
   deferredPrompt;   // PWA prompt
 
-  constructor() {
+  constructor(public alertCtrl: AlertController) {
     // console.log('Hello PwaPromptComponent Component');
     this.showBtn = false;
   }
@@ -24,7 +25,8 @@ export class InstallPwaButtonComponent implements OnInit {
       this.deferredPrompt = e;
 
     // Update UI by showing a button to notify the user they can add to home screen
-      this.showBtn = true;
+      this.showBtn = true;       // BTN
+      // this.install_pwa_prompt(); // PROMPT
     });
 
     // button click event to show the promt
@@ -57,5 +59,22 @@ export class InstallPwaButtonComponent implements OnInit {
         }
         this.deferredPrompt = null;
       });
+  }
+
+  async install_pwa_prompt() {
+    // const alert = await this.alertCtrl.create({
+    //   header: 'Install App',
+    //   buttons: [
+    //     'Cancel',
+    //     {
+    //       text: 'Ok',
+    //       handler: async (data: any) => {
+    //         this.add_to_home(null);
+    //       }
+    //     }
+    //   ]
+    // });
+    // await alert.present();
+    this.add_to_home(null);
   }
 }
